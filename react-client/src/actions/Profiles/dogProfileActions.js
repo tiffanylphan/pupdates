@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const getADog = (dogid, callback) => (dispatch) => {
-  axios.get(`http://localhost:8000/api/dogs/${dogid}`)
+  axios.get(`https://serene-atoll-31576.herokuapp.com/api/dogs/${dogid}`)
     .then((response) => {
       dispatch({ type: 'FETCH_DOG_FULFILLED', payload: response.data });
       callback(response.data);
@@ -11,8 +11,18 @@ export const getADog = (dogid, callback) => (dispatch) => {
     });
 };
 
+export const getOwnersDogs = ownerid => (dispatch) => {
+  axios.get(`https://serene-atoll-31576.herokuapp.com/api/users/dogs/${ownerid}`)
+    .then(({ data }) => {
+      dispatch({ type: 'FETCH_OWNERS_DOGS_FULFILLED', payload: data });
+    })
+    .catch((err) => {
+      dispatch({ type: 'FETCH_OWNERS_DOGS_FAILED', payload: err });
+    });
+};
+
 export const postDogs = (name, age, breed, gender, bio, owner, pictures, callback) => (dispatch) => {
-  axios.post('http://localhost:8000/api/dogs', {
+  axios.post('https://serene-atoll-31576.herokuapp.com/api/dogs', {
     name,
     age,
     breed,
@@ -31,7 +41,7 @@ export const postDogs = (name, age, breed, gender, bio, owner, pictures, callbac
 };
 
 export const updateDogs = (name, age, breed, gender, bio, dogid, pictures, data) => (dispatch) => {
-  axios.patch(`http://localhost:8000/api/dogs/${dogid}`, {
+  axios.patch(`https://serene-atoll-31576.herokuapp.com/api/dogs/${dogid}`, {
     name,
     age,
     breed,
@@ -40,14 +50,6 @@ export const updateDogs = (name, age, breed, gender, bio, dogid, pictures, data)
     pictures,
   })
     .then((response) => {
-      console.log('edited', response)
-      // const dog = JSON.parse(response.config.data);
-      // data.name = dog.name;
-      // data.age = dog.age;
-      // data.breed = dog.breed;
-      // data.gender = dog.gender;
-      // data.bio = dog.bio;
-      // data.pictures[0] = dog.pictures;
       dispatch({ type: 'UPDATE_DOG_FULFILLED', payload: response.data });
     })
     .catch((err) => {
@@ -58,7 +60,7 @@ export const updateDogs = (name, age, breed, gender, bio, dogid, pictures, data)
 export const deleteDogs = (dogid, uid) => (dispatch) => {
   axios({
     method: 'delete',
-    url: `http://localhost:8000/api/dogs/${dogid}`,
+    url: `https://serene-atoll-31576.herokuapp.com/api/dogs/${dogid}`,
     data: {
       owner: uid,
       dogid,

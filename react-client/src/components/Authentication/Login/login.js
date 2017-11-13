@@ -21,14 +21,16 @@ import { SocialIcon, FormLabel, FormInput } from 'react-native-elements';
 import axios from 'axios';
 import * as ownerActions from '../../../actions/Profiles/ownerActions';
 
+/**
+  Sign in with Facebook button
+
+ */
 class LoginScreen extends Component {
   constructor(props){
     super(props);
     this._fbAuth = this._fbAuth.bind(this);
     this._getPublicProfile = this._getPublicProfile.bind(this);
     this._getAwsSecretSauce = this._getAwsSecretSauce.bind(this);
-    this._checkUserInDB = this._checkUserInDB.bind(this);
-    
   }
 
   componentDidMount() {
@@ -45,6 +47,12 @@ class LoginScreen extends Component {
     // });
   }
 
+  /**
+    Request to Facebook for an authenticatin token.
+
+    @param void
+    @return An access token provided by Facebook
+  */
   _fbAuth() {
     AccessToken.getCurrentAccessToken()
     .then(data => {
@@ -74,6 +82,13 @@ class LoginScreen extends Component {
     });
   }
 
+  /**
+    Provide Amazon Web Services with a Facebook access token to
+    retrieve temporary AWS credentials.
+
+    @param Facebook Access Token
+    @return AWS credentials (accessKeyID, secretAccessKey, sessionToken)
+  */
   _getAwsSecretSauce(accessToken) {
     AWS.config.region = awsmobile.aws_cognito_region;
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -94,12 +109,19 @@ class LoginScreen extends Component {
     });
   }
 
+  /**
+    Request to Facebook with access token to retrieve user's Facebook
+    public profile.
+
+    @param Facebook Access Token
+    @return Facebook public profile
+  */
   _getPublicProfile(accessToken) {
     const responseInfoCallback = (error, data) => {
       if (error) {
         alert('Error fetching data: ' + error.toString());
       } else {
-        this._checkUserInDB(data);
+        this.props.actions.findOrCreateOwner(data);
       }
     }
 
@@ -114,15 +136,6 @@ class LoginScreen extends Component {
 
     const infoRequest = new GraphRequest('/me', fb_params, responseInfoCallback);
     new GraphRequestManager().addRequest(infoRequest).start();
-  }
-
-  _checkUserInDB = (fb) => {
-    this.props.actions.getOwnerFromDB(fb, (error) => {
-      console.log('check user', error);
-      if (error) {
-        this.props.actions.addOwnerToDB(fb);
-      }
-    });
   }
 
   render() {

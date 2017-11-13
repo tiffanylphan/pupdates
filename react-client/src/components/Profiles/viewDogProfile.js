@@ -14,7 +14,7 @@ import * as dogActions from '../../actions/Profiles/dogProfileActions';
 
 class viewDogProfile extends Component {
   static navigationOptions = {
-    title: 'ViewDogProfile',
+    title: 'Dog Profile',
   };
   constructor(props) {
     super(props);
@@ -32,8 +32,6 @@ class viewDogProfile extends Component {
   }
 
   render () {
-    console.log(this)
-    
     const { 
       name, 
       age, 
