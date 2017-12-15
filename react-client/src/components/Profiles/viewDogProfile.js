@@ -9,25 +9,23 @@ import { View,
 } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import Button from 'react-native-button';
-
 import * as dogActions from '../../actions/Profiles/dogProfileActions';
 
-class viewDogProfile extends Component {
+class ViewDogProfile extends Component {
   static navigationOptions = {
     title: 'Dog Profile',
   };
   constructor(props) {
     super(props);
 
-    this.handlePress = this.handlePress.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   componentWillMount() {
     this.props.actions.showDog(this.props.navigation.state.params);
   }
 
-  // clicking on edit button routes user to edit dog profile page
-  handlePress() {
+  handleSave() {
     const { navigate } = this.props.navigation
     navigate('EditDogProfile', this.props.navigation.state.params);
   }
@@ -46,7 +44,7 @@ class viewDogProfile extends Component {
       <View style={styles.container}>
       <View style={[styles.boxContainer, styles.boxOne]}>
         <Image
-          style={{width: 220, height: 220, borderRadius: 110}}
+          style={styles.image}
           source={{uri: pictures[0]}}
         />
         </View>
@@ -69,9 +67,9 @@ class viewDogProfile extends Component {
         </View>
         <View style={[styles.boxContainer, styles.boxThree]}>
           <Button
-            onPress={this.handlePress}
-            containerStyle={{height:45, width: 250, overflow:'hidden', borderRadius:20, backgroundColor: '#f44e64', justifyContent:'center', alignItems:'center'}}
-            style={{fontSize: 16, color: 'white', justifyContent:'center', alignItems:'center'}}
+            onPress={this.handleSave}
+            containerStyle={styles.buttonContainer}
+            style={styles.button}
           >
             Edit
           </Button>
@@ -114,6 +112,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#3f3f3f',
   },
+  image: {
+    width: 220, 
+    height: 220, 
+    borderRadius: 110,
+  },
+  button: {
+    fontSize: 16,
+    color: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    height: 45,
+    width: 250,
+    overflow: 'hidden',
+    borderRadius: 20,
+    backgroundColor: '#f44e64',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 const dogState = (store) => {
@@ -128,4 +146,4 @@ const dogDispatch = (dispatch) => {
   }
 };
 
-export default connect(dogState, dogDispatch)(viewDogProfile);
+export default connect(dogState, dogDispatch)(ViewDogProfile);

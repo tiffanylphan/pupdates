@@ -11,15 +11,12 @@ import { List,
          ListItem, 
          Avatar } from 'react-native-elements';
 import { GOOGLE_API } from 'react-native-dotenv';
-
 import axios from 'axios';
-
 import Swipeout from 'react-native-swipeout';
 import Button from 'react-native-button'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
-
 import ViewDogProfileScreen from '../Profiles/viewDogProfile';
 import corgiGif from '../../../images/profileCoolCorgiCropped.gif';
 import * as dogActions from '../../actions/Profiles/dogProfileActions';
